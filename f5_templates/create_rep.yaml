@@ -3,17 +3,17 @@
 - name: f5_tasks
   hosts: bigip1
   connection: local
-  vars:
-   provider:
-     password: "{{ bigip_password }}"
-     server: "{{ ansible_host }}"
-     user: "{{ bigip_username }}"
-     validate_certs: "{{ validate_certs }}"
-     server_port: "{{ bigip_port }}"
+  # vars:
+  #  provider:
+    #  password: "{{ bigip_password }}"
+    #  server: "{{ ansible_host }}"
+    #  user: "{{ bigip_username }}"
+    #  validate_certs: "{{ validate_certs }}"
+    #  server_port: "{{ bigip_port }}"
   tasks:
     - name: Create REP pools
       bigip_pool:
-        provider: "{{ provider }}"
+        provider: {{ provider }}
         name: {{ item.name }}
         partition: Common
       with_items:
