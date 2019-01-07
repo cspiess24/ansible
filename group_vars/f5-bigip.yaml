@@ -1,0 +1,6 @@
+---
+
+bigip_username: "admin"
+bigip_password: "password123!!"
+bigip_port: 443
+validate_certs: "no"
