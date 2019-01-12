@@ -2,47 +2,41 @@
 
 - name: f5_tasks
   hosts: bigip1
-  connection: local
-  # vars:
-  #  provider:
-    #  password: "{{ bigip_password }}"
-    #  server: "{{ ansible_host }}"
-    #  user: "{{ bigip_username }}"
-    #  validate_certs: "{{ validate_certs }}"
-    #  server_port: "{{ bigip_port }}"
+  vars_files:
+    - ../group_vars/f5-bigip.yaml
   tasks:
     - name: Create REP pools
       bigip_pool:
-        provider: {{ provider }}
-        name: {{ item.name }}
+        provider: "{{ provider }}"
+        name: "{{ item.name }}"
         partition: Common
       with_items:
-       - {{ var.rep_pools }}
+       - "{{ virtual_server.pool }}"
       delegate_to: localhost
     - name: Add members to pools
       bigip_pool_member:
         provider: "{{ provider }}"
-        host: {{ item.host }}
-        name: {{ item.host }}
-        pool: {{ item.name }}
-        port: {{ item.port }}
+        host: "{{ item.host }}"
+        name: "{{ item.host }}"
+        pool: "{{ item.pool }}"
+        port: "{{ item.port }}"
       with_items:
-        - {{ var.rep_pools }}
+        - "{{ virtual_server.pool.members }}"
       delegate_to: localhost
     - name: Create virtual servers
-      bigip_virtual_servers:
+      bigip_virtual_server:
         provider: "{{ provider }}"
         description: foo-vip
         destination: 172.16.10.108
-        name: {{ item.name }}
-        pool: {{ item.name }}
-        port: {{ item.port }}
+        name: "{{ item.name }}"
+        pool: "{{ item.name }}"
+        port: "{{ item.port }}"
         snat: Automap
         profiles:
           - http
           - clientssl
       with_items:
-        - {{ var.rep_pools }}
+        - "{{ virtual_server }}"
       delegate_to: localhost
 
     # - name: Create node

@@ -1,0 +1,13 @@
+---
+
+- import_playbook: ../f5_templates/create_rep.yaml
+  vars:
+    virtual_server: 
+      name: test-vs
+      port: 80
+      pool:
+        name: test-pool
+        members:
+        - host: 1.1.1.1
+          port: 80
+          pool: test-pool

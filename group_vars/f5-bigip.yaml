@@ -1,12 +1,7 @@
 ---
 
-bigip_username: "admin"
-bigip_password: "password123!!"
-bigip_port: 443
-validate_certs: "no"
-
 provider:
-  server: {{ ansible_host }}
+  server: "{{ ansible_host }}"
   password: "password123!!"
   user: "admin"
   validate_certs: "no"
