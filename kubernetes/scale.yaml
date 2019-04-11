@@ -1,0 +1,13 @@
+---
+- name: kube scale
+  hosts: master
+
+  tasks:
+    - name: scale kube-dns
+      k8s_scale:
+        api_version: v1
+        kind: Deployment
+        name: kube-dns
+        namespace: kube-system
+        replicas: 3
+        wait_timeout: 60
